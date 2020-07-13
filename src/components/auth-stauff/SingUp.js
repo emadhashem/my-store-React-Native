@@ -20,6 +20,7 @@ const SingUp = ({navigation}) => {
                         cur
                     } , {merge : true})
                     .then(() =>{
+                        db.collection('user').doc('cur').set({cur : auth.currentUser.uid})
                         setLoading(false);
                     }).catch(e => alert('from db.collection ' , e))
                 } else {

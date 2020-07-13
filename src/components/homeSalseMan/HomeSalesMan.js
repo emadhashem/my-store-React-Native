@@ -6,11 +6,12 @@ import DrawerContent from './DrawerContent';
 import Home from './home/HomeSalesMan'
 import Search from './serach/Search'
 import Chat from './chat/Chat'
-// import {} from '@'
+import { connect } from 'react-redux'
+
 const drawer = createDrawerNavigator();
 const HomeSalesMan = () => {
     return (
-        <drawer.Navigator drawerContent = {props => <DrawerContent {...props} />}>
+        <drawer.Navigator drawerContent = {props => <DrawerContent {...props } />}>
             <drawer.Screen name = "home" component = {Home} />
             <drawer.Screen name = "profile" component = {Profile}/>
             <drawer.Screen name = "search" component = {Search}/>   

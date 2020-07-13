@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { auth } from './src/services/firebase';
+import { auth, db } from './src/services/firebase';
 import SignIn from './src/components/auth-stauff/SignIn'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -24,39 +24,54 @@ import ChatRoom from './src/components/chatRoom/ChatRoom';
 //   }
 // };
 /* for yellow waring about timer   */
+import { Provider } from 'react-redux';
+import {createStore} from 'redux'
+import rootReducer from './src/redux/reducers/index'
+import middle from './src/redux/middleWare/index'
+const store = createStore(rootReducer , middle);
 
 const stack = createStackNavigator();
 export default function App() {
-  
+    const [cur , setCur] = useState('')
+    useEffect(() => {
+      db.collection('user').doc('cur').onSnapshot(doc => {
+        setCur(doc.data().cur)
+      })
+    } , [cur])
   return (
-    <NavigationContainer >
-      <stack.Navigator initialRouteName = 'welcome' headerMode = {null} >
-          <stack.Screen name = "welcome" component = {WelCome} options = {{
-            header : () => null
-          }}/>
-          <stack.Screen name = "home" component = {Home} options = {{
-            header : () => null
-          }}/>
-          <stack.Screen name = "signin" component = {SignIn} 
-          options = {{
-            header : () => null
-          }}
-          />
-          <stack.Screen name = "signup" component = {SignUp} 
-          options = {{
-            header : () => null
-          }}/>
-          <stack.Screen name = "salesman" component = {HomeSalesMan} 
+    <Provider store = {store}>
+        <NavigationContainer >
+          <stack.Navigator initialRouteName = 'welcome' headerMode = {null} >
+            <stack.Screen name = "welcome" component = {WelCome} options = {{
+              header : () => null
+            }}/>
+            <stack.Screen name = "home" component = {Home} options = {{
+              header : () => null
+            }}/>
+            <stack.Screen name = "signin" component = {SignIn} 
             options = {{
               header : () => null
             }}
-          />
-          <stack.Screen name = "product" component = {Product}/>
-          <stack.Screen name = "profileRvw" component = {ProfileReview}/>
-          <stack.Screen name = "chatroom" component = {ChatRoom} />
-      </stack.Navigator>
-    </NavigationContainer>
-    // <Test />
+            />
+            <stack.Screen name = "signup" component = {SignUp} 
+            options = {{
+              header : () => null
+            }}/>
+            <stack.Screen name = "salesman" component = {HomeSalesMan} 
+              options = {{
+                header : () => null
+              }}
+            />
+            <stack.Screen name = "product" component = {Product}/>
+            <stack.Screen name = "profileRvw" component = {ProfileReview}/>
+            <stack.Screen name = "chatroom" component = {ChatRoom} />
+        </stack.Navigator>
+      </NavigationContainer>
+     
+    </Provider>
+    //  <Provider store = {store}>
+    //    <Test />
+    //  </Provider>
   );
 }
 

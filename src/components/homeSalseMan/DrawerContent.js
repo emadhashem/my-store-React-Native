@@ -1,10 +1,49 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, AsyncStorage } from 'react-native'
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer'
 import { Icon, Button, Avatar } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { auth } from '../../services/firebase'
+import { auth, db } from '../../services/firebase'
+import { connect } from 'react-redux'
+import { set } from 'react-native-reanimated'
+const pic = 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png'
 const DrawerContent = (props) => {
+    const [flrs , setFlrs] = useState(0)
+    const [fling , setFling] = useState(0)
+    const [email , setEmail] = useState('')
+    const [uName , setUName] = useState('')
+    const [userImg , setUserImg] = useState(pic)
+    const [user , setUser] = useState('')
+    const [cur , setCur] = useState('')
+    useEffect(() => {
+      db.collection('user').doc('cur').onSnapshot(doc => {
+        setCur(doc.data().cur)
+      })
+    } , [cur])
+    
+    useEffect(() => { 
+        getDataFromStorage().then(user => {
+            setUser(user)
+            db.collection('user').doc(user).get()
+            .then(doc => {
+                setEmail(doc.data().email)
+                setUName(doc.data().uName)
+                setFling(doc.data().fling)
+                setFlrs(doc.data().flrs)
+                if(typeof(doc.data().img) !== 'undefined') {
+                    setUserImg(doc.data().img)
+                }
+            })
+        })  
+    } , [cur])
+    async function getDataFromStorage() {
+        try {
+            let authKey = JSON.parse(await AsyncStorage.getItem('auth_key'))
+            return authKey
+        } catch(e) {
+            alert(e)
+        }
+    }
     function logOut() {
         auth.signOut()
         .then(() => {
@@ -25,20 +64,20 @@ const DrawerContent = (props) => {
     }
     return (
         <View style = {styles.constainer}>
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView {...props}> 
                 <View style = {styles.usInfo}>
                     <View style = {{flexDirection : "row" , alignItems : "center" , marginBottom : 15}}>
                         <Avatar 
-                        source = {{uri: 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png'}} 
+                        source = {{uri: userImg}} 
                         size = {90}
                         rounded = {true}
                         />
                         <View style = {{marginLeft : 15}}>
                             <Text style = {styles.title}>
-                                User Name
+                                {uName}
                             </Text>
                             <Text style = {styles.caption}>
-                                Email@example.com
+                                {email}
                             </Text>
                         </View>
                     </View>
@@ -46,7 +85,7 @@ const DrawerContent = (props) => {
                         <View >
                             <Text style = {[styles.title , 
                                 {textAlign : "center" , fontSize : 23 }]}>
-                                80
+                                {flrs}
                             </Text>
                             <Text style = {styles.caption}>
                                 followers
@@ -56,7 +95,7 @@ const DrawerContent = (props) => {
                             <Text style = {[styles.title , 
                                 {textAlign : "center" , fontSize : 23 , }
                                 ]}>
-                                80
+                                {fling}
                             </Text>
                             <Text style = {styles.caption}>
                                 following
@@ -68,7 +107,8 @@ const DrawerContent = (props) => {
                     <DrawerItem 
                         label = "Home"
                         icon = {() => <Icon name = "home" type = "antdesign" />}
-                        onPress = {() => {props.navigation.navigate('home')}}
+                        onPress = {() => {
+                            props.navigation.navigate('home')}}
                     /> 
                     <DrawerItem 
                         label = "Profile"
@@ -136,4 +176,5 @@ const styles = StyleSheet.create({
 
     }
 })
+
 export default DrawerContent

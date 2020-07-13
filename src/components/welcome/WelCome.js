@@ -3,21 +3,30 @@ import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import {auth, db} from '../../services/firebase'
 import { Button } from 'react-native-elements'
-const WelCome = ({navigation}) => {
+import {setUser} from '../../redux/actions/shared'
+import { connect } from 'react-redux'
+const WelCome = ({navigation , dispatch}) => {
     useEffect(() => {
-        getDataFromStorage().then(authKey => {
+        getDataFromStorage().then(authKey => {  
             db.collection('user').doc(authKey).get()
             .then(doc => {
                 if(doc.exists) {
                     if(doc.data().cur == 'customer') {
-                        navigation.navigate('home')
-                    } else navigation.navigate('salesman')
+                        move(doc.id).then(() => {
+                            navigation.navigate('home')
+                        })
+                    } else {
+                        move(doc.id).then(() => {
+                            navigation.navigate('salesman')
+                        })
+                    }
+                    dispatch(setUser(doc.id))
                 } else {
                     navigation.navigate('signin')
                 }
             }).catch(e => alert(e))
         })
-    })
+    } , [])
     async function getDataFromStorage() {
         try {
             let authKey = JSON.parse(await AsyncStorage.getItem('auth_key'))
@@ -26,6 +35,9 @@ const WelCome = ({navigation}) => {
         } catch(e) {
             alert(e)
         }
+    }
+    async function move(authKey) {
+        await setUser(authKey)
     }
     return (
         <View style = {{flex : 1, justifyContent : "center" , alignItems : "center"}}>
@@ -36,4 +48,4 @@ const WelCome = ({navigation}) => {
         </View>
     )
 }
-export default WelCome
+export default connect()(WelCome)

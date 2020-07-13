@@ -36,8 +36,30 @@ const downloadImg = (path) => {
     return storage.ref().child(path).getDownloadURL();
 
 }
+const TakePhotoGallery  = async () => {
+    _getPermission()
+    let {granted} = await imagePicker.getCameraRollPermissionsAsync();
+    if(granted== true) {
+        let res = await imagePicker.launchImageLibraryAsync({
+            allowsEditing : true,
+            aspect : [4 , 3],
+            mediaTypes : "All"
+        });
+        if(res.cancelled) return;
+        return res.uri;
+    } else {
+        alert('permission not accepted')
+    }
+}
 export const addFromCamera = async (path = '') => {
     let uri = await TakePhotoCamera();
+    let up = await uploadImg(uri , path).then(() => {
+        console.warn('uplaod is done')
+    }).catch(e => console.warn('upload failed'))
+    return downloadImg(path);
+}
+export const addFromGallery  = async (path = '') => {
+    let uri = await TakePhotoGallery();
     let up = await uploadImg(uri , path).then(() => {
         console.warn('uplaod is done')
     }).catch(e => console.warn('upload failed'))
@@ -46,7 +68,7 @@ export const addFromCamera = async (path = '') => {
 export const deleteSomePhoto = (path) => {
     storage.ref().child(path).delete()
     .then(() => alert('delete is done'))
-    .catch(e => console.warn(e))
+    //.catch(e => console.warn(e))
 }
 export const contain = (txt = '' , oTxt = '') => {
     return (txt.toLowerCase().trim()).includes((oTxt.toLowerCase().trim()))

@@ -65,7 +65,7 @@ const Search = ({navigation}) => {
                             }}>
                                 <View style = {{flex : 1 , flexDirection : 'row', alignItems : 'center' , width : '80%'}}>
                                     <Avatar size = {"medium"} source = {{uri : pic}}/>
-                                    <Text style = {{fontWeight : 'bold' , marginLeft : 15}}>
+                                    <Text style = {{fontWeight : 'bold' , width : '50%' , marginLeft : 15}}>
                                         {item.uName}
                                     </Text>
                                 </View>

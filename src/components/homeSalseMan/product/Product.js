@@ -31,7 +31,6 @@ const Product = ({navigation , route}) => {
             }} 
             key = {id}>
                 <Image 
-                    PlaceholderContent = {(loading == true) ? <ActivityIndicator /> : null}
                 containerStyle = {{width : '100%' , height : '80%'}} source = {{uri : uri}} />
                 <TouchableOpacity
                 onPress = {() => deletePhoto(id) }
@@ -191,14 +190,16 @@ const Product = ({navigation , route}) => {
                 </View>
                 <View style = {{height : '30%' , }}>
                     <Button 
-                        containerStyle = {{backgroundColor : 'red' , marginTop : 'auto'}}
+                        containerStyle = {{ marginTop : 'auto'}}
                         onPress = {() => addMorePhoto()}
-                        icon = {<Icon name = "camera" type = "feather" />} type = "clear"/>
+                        title = {(imgs.length == 0) ? "Add Photos" : "Add more Photos"}
+                        titleStyle = {{marginHorizontal : 5}}
+                        icon = {<Icon name = "camera" type = "feather" color = "white" />} type = "solid"/>
                     <ScrollView containerStyle = {{flex : 1}} horizontal = {true}>
                         { 
                             imgs.map(item => {
                                 return (
-                                    <MakeImg {...item}/>
+                                    <MakeImg key = {item.id} {...item}/>
                                 )
                             })
                         }

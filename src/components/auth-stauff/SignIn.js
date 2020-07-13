@@ -4,28 +4,37 @@ import { Input, Icon, Button } from 'react-native-elements'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { auth, db } from '../../services/firebase'
 import AsyncStorage from '@react-native-community/async-storage'
-
-const SignIn = ({navigation}) => {
+import { connect } from 'react-redux'
+import {setUser} from '../../redux/actions/shared'
+const SignIn = ({navigation , dispatch}) => {
     const [forgetPass, setForgetPass] = useState(false)
     const [authInput , setAuthInput] = useState({email : '' , pass : ''});
     const [emailReset , setEmailReset] = useState('');
     const signIn = (email , pass) => {
         auth.signInWithEmailAndPassword(email , pass + '')
-        .then(() => success(auth.currentUser.uid))
+        .then(() => success())
         .catch(e => failed(e));
     }
     // sign in done correct
-    function success(userId) {
-        
-        saveToStorage(userId).then(() => {
-            db.collection('user').doc(userId).get()
-            .then(data => data.data())
-            .then(data => {
-                if(data.cur == 'customer') navigation.navigate('home');
-                else navigation.navigate('salesman');
-            })
-            
+    function success() {
+        auth.onAuthStateChanged(user => {
+            // console.warn(user)
+            if(user !== null) {
+                saveToStorage(user.uid).then(() => {
+                    dispatch(setUser(user.uid))
+                }).then(() => {
+                    db.collection('user').doc('cur').set({cur : user.uid})
+                }).then(() => {
+                    db.collection('user').doc(user.uid).get()
+                    .then(data => data.data())
+                    .then(data => {
+                        if(data.cur == 'customer') navigation.navigate('home');
+                        else navigation.navigate('salesman');
+                    })
+                })
+            }
         })
+        
     }
     async function saveToStorage(userId) {
         try {   
@@ -120,4 +129,4 @@ const styles = StyleSheet.create({
         height : '100%'
     }
 })
-export default SignIn
+export default connect()(SignIn)
