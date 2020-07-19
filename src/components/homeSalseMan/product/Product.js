@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import {v4 , v5} from 'uuid'
 import { addFromCamera, deleteSomePhoto} from '../../../helpers/commonFuntions';
 import { auth, db } from '../../../services/firebase';
+import { FlatList } from 'react-native-gesture-handler';
 
 const Product = ({navigation , route}) => {
     //console.warn(route.params.prs)
@@ -118,7 +119,7 @@ const Product = ({navigation , route}) => {
                 )
             }
             <Header 
-                containerStyle = {{height : 60}}
+                containerStyle = {{height : 70}}
                 backgroundColor = "rgba(0,0,0,.3)"
                 leftComponent = {<Button 
                     buttonStyle = {{backgroundColor : 'transparent' , marginBottom : 25}}
@@ -195,15 +196,18 @@ const Product = ({navigation , route}) => {
                         title = {(imgs.length == 0) ? "Add Photos" : "Add more Photos"}
                         titleStyle = {{marginHorizontal : 5}}
                         icon = {<Icon name = "camera" type = "feather" color = "white" />} type = "solid"/>
-                    <ScrollView containerStyle = {{flex : 1}} horizontal = {true}>
-                        { 
-                            imgs.map(item => {
-                                return (
-                                    <MakeImg key = {item.id} {...item}/>
-                                )
-                            })
-                        }
-                    </ScrollView>
+                <View style = {{flex : 1 ,}}>
+                    <FlatList 
+                        numColumns = {3}
+                        data = {imgs}
+                        renderItem = {({item}) => {
+                            return (
+                                <MakeImg key = {item.id} {...item}/>
+                            )
+                        }}
+                        keyExtractor = {item => item.id}
+                    />
+                </View>
                 </View>
             </View> 
         </View>

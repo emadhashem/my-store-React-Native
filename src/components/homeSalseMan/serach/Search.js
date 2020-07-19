@@ -53,8 +53,9 @@ const Search = ({navigation}) => {
                 <FlatList
                     data = {res}
                     renderItem = {({item} , i) => (
-                        <Card >
-                            <TouchableOpacity onPress = {() => navigation.navigate('profileRvw' , {
+                        <Card containerStyle = {{borderRadius : 50}} >
+                            <TouchableOpacity
+                            onPress = {() => navigation.navigate('profileRvw' , {
                                 docId : item.id
                             })}>
                             <View style = {{flex : 1 ,
@@ -64,7 +65,8 @@ const Search = ({navigation}) => {
                                 alignItems : 'center'
                             }}>
                                 <View style = {{flex : 1 , flexDirection : 'row', alignItems : 'center' , width : '80%'}}>
-                                    <Avatar size = {"medium"} source = {{uri : pic}}/>
+                                    <Avatar size = {"medium"} rounded
+                                    source = {{uri : (typeof(item.img) !== 'undefined') ? item.img : pic}}/>
                                     <Text style = {{fontWeight : 'bold' , width : '50%' , marginLeft : 15}}>
                                         {item.uName}
                                     </Text>
