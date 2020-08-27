@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, Image, Modal, StyleSheet } from 'react-native'
 import { Header, Icon, Avatar, Card, Button } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-
+import firebase from 'firebase/app'
 import {db} from '../../../services/firebase'
 import { connect } from 'react-redux'
 const HomeSalesMan = ({navigation , user = ''}) => {
@@ -12,7 +12,6 @@ const HomeSalesMan = ({navigation , user = ''}) => {
     useEffect(() => {
         db.collection('user').doc(user).collection('following').get()
         .then(docs => {
-            
             docs.forEach(doc => {
                 db.collection('follow').doc(user + doc.id).get()
                 .then(fDoc => {
@@ -45,12 +44,22 @@ const HomeSalesMan = ({navigation , user = ''}) => {
     const openProduct = async (item) => {
         setProductdata(item)
     }
+    // this how to add a new element to arr without get whole arr
+    const addToCart = () => {
+        db.collection('cart').doc(user).update({
+            carts : firebase.firestore.FieldValue.arrayUnion({
+                ...productData, owner : productData.owner, ownerData : {
+                    uName : productData.uName,email : productData.email, 
+                    storeName : productData.storeName, img : productData.img
+                }
+            })
+        }).catch(e => alert(e))
+    }
     // console.warn(productData.imgs)
     return (
         <View style = {{flex : 1}}>
             <Header
                 backgroundColor = "transparent"
-                
                 leftComponent = {<TouchableOpacity
                     onPress = {() => navigation.toggleDrawer()}>
                     <Icon  size = {30} name = "menu"  type = "feather"/>
@@ -136,6 +145,7 @@ const HomeSalesMan = ({navigation , user = ''}) => {
                                     />
                                 </View>   
                             </View>
+                            <Button title = "Add to Cart"onPress = {() => addToCart()} />
                         </View>
                     </Modal>
                 ) : (null)
@@ -157,7 +167,7 @@ const HomeSalesMan = ({navigation , user = ''}) => {
                                         onPress = {() => {
                                             setOpenModalProduct(false)
                                             navigation.navigate('profileRvw' , {
-                                                docId : productData.owner
+                                                docId : item.owner
                                             })
                                         }}
                                         size = "medium" rounded source = {{uri : item.img}}/>
@@ -165,7 +175,7 @@ const HomeSalesMan = ({navigation , user = ''}) => {
                                             onPress = {() => {
                                                 setOpenModalProduct(false)
                                                 navigation.navigate('profileRvw' , {
-                                                    docId : productData.owner
+                                                    docId : item.owner
                                                 })
                                             }}
                                             style = {{fontSize : 15 , fontWeight : 'bold' , marginLeft : 10}}

@@ -122,9 +122,9 @@ const DrawerContent = (props) => {
                         onPress = {() => {props.navigation.navigate('search')}}
                     />
                     <DrawerItem 
-                        label = "Chat"
-                        icon = {() => <Icon name = "hipchat" type = "fontisto" />}
-                        onPress = {() => {props.navigation.navigate('chat')}}
+                        label = "Cart"
+                        icon = {() => <Icon name = "shoppingcart" type = "antdesign" />}
+                        onPress = {() => {props.navigation.navigate('cart')}}
                     />
                 </View>
             </DrawerContentScrollView>

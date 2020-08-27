@@ -81,6 +81,7 @@ const SignIn = ({navigation , dispatch}) => {
                     leftIcon = {<Icon name = "email" type = "MaterialIcons" color = "white"/>}/>
 
                     <Input inputContainerStyle = {styles.input} 
+                    secureTextEntry = {true}
                     placeholder = "Your Password" value = {authInput.pass}
                     onChangeText = {(pass) => setAuthInput({...authInput , pass})}
                     leftIcon = {<Icon name = "locked" type = "fontisto" color = "white"/> }/>

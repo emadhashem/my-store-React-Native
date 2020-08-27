@@ -5,7 +5,7 @@ import Profile from './profile/Profile';
 import DrawerContent from './DrawerContent';
 import Home from './home/HomeSalesMan'
 import Search from './serach/Search'
-import Chat from './chat/Chat'
+import Cart from './chat/Cart'
 import { connect } from 'react-redux'
 
 const drawer = createDrawerNavigator();
@@ -15,7 +15,7 @@ const HomeSalesMan = () => {
             <drawer.Screen name = "home" component = {Home} />
             <drawer.Screen name = "profile" component = {Profile}/>
             <drawer.Screen name = "search" component = {Search}/>   
-            <drawer.Screen name = "chat" component = {Chat}/>
+            <drawer.Screen name = "cart" component = {Cart}/>
         </drawer.Navigator>
     )
 }

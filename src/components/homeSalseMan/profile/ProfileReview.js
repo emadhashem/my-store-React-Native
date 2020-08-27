@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, SafeAreaView,  } from 'react-native'
-import { db, auth } from '../../../services/firebase';
+import { View, Text, FlatList, SafeAreaView, Modal, StyleSheet, ScrollView,  } from 'react-native'
+import { db, auth} from '../../../services/firebase';
 import { Header , Button, Icon, Avatar, Image } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-
+import firebase from 'firebase/app'
 
 const pic = 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png'
 const numberOfCol = 2;
@@ -75,6 +75,11 @@ const ProfileReview = ({navigation , route , user}) => {
             }
         })
     } , [])
+    const [openModalProduct , setOpenModalProduct] = useState(false)
+    const [productData , setProductdata] = useState()
+    const openProduct = async (item) => {
+        await setProductdata(item)
+    }
     const ViewProduct = ({item}) => {
         return (
             <View style = {{flex : 1 , width : '100%' , 
@@ -82,7 +87,9 @@ const ProfileReview = ({navigation , route , user}) => {
             borderRadius : 15
 
             }}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress = {() => {
+                    openProduct(item).then(() => setOpenModalProduct(true))
+                }}>
                     <View style = {{height : '20%'}}>
                         <Text style = {{textAlign : 'center' , fontWeight : 'bold' , color : 'white'}}>{item.prName}</Text>            
                     </View>
@@ -111,8 +118,59 @@ const ProfileReview = ({navigation , route , user}) => {
         db.collection('follow').doc(user + docId).get()
         .then(doc => setFollow(doc.exists))
     } , [])
+    // this how to add a new element to arr without get whole arr
+    const addToCart = () => {
+        db.collection('cart').doc(user).update({
+            carts : firebase.firestore.FieldValue.arrayUnion({
+                ...productData, owner : docId, ownerData : {
+                    uName,email, storeName, img
+                }
+            })
+        }).catch(e => alert(e))
+    }
     return (
         <View style = {{flex : 1}}>
+            {
+                (openModalProduct == false) ? null : (
+                    <Modal
+                        transparent = {true}
+                        animationType = "slide"
+                    >
+                        <View style = {{flex : 1  , backgroundColor : "rgba(0,0,0,.8)" , height : '100%'}}>
+                            <Header 
+                                leftComponent = {<Button
+                                    titleStyle = {{fontSize : 20 }} 
+                                    containerStyle = {{width : '100%'}}
+                                    title = "back" onPress = {() => setOpenModalProduct(false)}/>}
+                                    leftContainerStyle = {{width : '150%'}}
+                            />
+                            <View style = {styles.prInfo}>
+                                    <View style = {styles.txtHlder}>
+                                        <Text style = {[styles.txt_info]}>{productData.description}</Text>
+                                        <Text style = {[styles.txt_info , styles.txtBold]}>{productData.prName}</Text>
+                                        <Text style = {[styles.txt_info , styles.txtBold]}>{productData.prPrice} L.E</Text> 
+                                    </View>
+                                    <ScrollView contentContainerStyle = {styles.imgsHlder} horizontal = {true}>
+                                    {
+                                        productData.imgs.map((item , i) => (
+                                            <Image containerStyle = {styles.imghlder}
+                                            source = {{uri : item.uri}}
+                                            
+                                            />
+                                        ))
+                                    }
+                                    </ScrollView>
+                                    <View>
+                                        <Button title = "Add to Cart" onPress = {() => addToCart()} />
+                                    </View>
+                            </View>
+                        </View>
+                        
+
+                    </Modal>
+                )
+            }
+
             <View >
                 <Header 
                 backgroundColor = "transparent">
@@ -234,6 +292,38 @@ const ProfileReview = ({navigation , route , user}) => {
         </View>
     )
 }
+const styles = StyleSheet.create({
+    prInfo : {
+        flex : 1,
+        padding : 10
+        
+    },
+    txt_info : {
+        color : 'white',
+        
+    },
+    txtBold : {
+        fontSize : 25,
+        fontWeight : "bold",
+        width : '100%',
+        textAlign : "center"
+        
+    },
+    txtHlder : {
+        width : '100%',
+        
+    },
+    imgsHlder : {
+        width : 200,
+        height : 150,
+        marginTop : 50
+    },
+    imghlder :{
+        width : '100%',
+        height : '100%'
+    }
+
+})
 const mapStateToProps = ({user}) => ({
     user
 })

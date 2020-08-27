@@ -4,7 +4,9 @@ import { Input, Icon , Button, CheckBox } from 'react-native-elements'
 import { set } from 'react-native-reanimated';
 import { auth, db } from '../../services/firebase'
 import AsyncStorage from '@react-native-community/async-storage'
-const SingUp = ({navigation}) => {
+import { connect } from 'react-redux';
+import {setUser} from '../../redux/actions/shared'
+const SingUp = ({navigation , dispatch}) => {
     const [authInput , setAuthInput] = useState({email : '' , pass : '' , pass1 : '' , uName : ''});
     const [cur , setCur] = useState('customer');
     const [loading , setLoading] = useState(false)
@@ -46,6 +48,9 @@ const SingUp = ({navigation}) => {
             .then(data => {
                 if(data.cur == 'customer') navigation.navigate('home');
                 else navigation.navigate('salesman');
+            }).then(() => {
+                db.collection('cart').doc(userId).set({carts : []})
+                dispatch(setUser(userId))
             })
         })
     }
@@ -88,11 +93,13 @@ const SingUp = ({navigation}) => {
 
                 <Input inputContainerStyle = {styles.input} 
                 placeholder = "Your Password" value = {authInput.pass}
+                secureTextEntry = {true}
                 onChangeText = {(pass) => setAuthInput({...authInput , pass})}
                 leftIcon = {<Icon name = "locked" type = "fontisto" color = "black"/> }/>
 
                 <Input inputContainerStyle = {styles.input} 
                 placeholder = "Confirm Your Password" value = {authInput.pass1}
+                secureTextEntry = {true}
                 onChangeText = {(pass1) => setAuthInput({...authInput , pass1})}
                 leftIcon = {<Icon name = "locked" type = "fontisto" color = "black"/> }/>
                 {
@@ -146,4 +153,5 @@ const styles = StyleSheet.create({
         height : 40
     },
 })
-export default SingUp
+
+export default connect()(SingUp)
