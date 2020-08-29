@@ -19,6 +19,7 @@ const SignIn = ({navigation , dispatch}) => {
     function success() {
         auth.onAuthStateChanged(user => {
             // console.warn(user)
+            db.collection('user').doc('cur').set({cur : user.uid})
             if(user !== null) {
                 saveToStorage(user.uid).then(() => {
                     dispatch(setUser(user.uid))

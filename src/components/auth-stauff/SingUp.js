@@ -15,6 +15,7 @@ const SingUp = ({navigation , dispatch}) => {
         if(pass === pass1) {
             auth.createUserWithEmailAndPassword(email , pass).then(() => {
                 setLoading(true)
+                dispatch(setUser(auth.currentUser.uid))
                 if(cur == 'customer') {
                     db.collection('user').doc(auth.currentUser.uid).set({
                         email,
@@ -33,6 +34,7 @@ const SingUp = ({navigation , dispatch}) => {
                         storeName
                     } , {merge : true})
                     .then(() =>{
+                        db.collection('user').doc('cur').set({cur : auth.currentUser.uid})
                         setLoading(false);
                     }).catch(e => alert('from db.collection ' , e))
                 }
@@ -50,7 +52,6 @@ const SingUp = ({navigation , dispatch}) => {
                 else navigation.navigate('salesman');
             }).then(() => {
                 db.collection('cart').doc(userId).set({carts : []})
-                dispatch(setUser(userId))
             })
         })
     }

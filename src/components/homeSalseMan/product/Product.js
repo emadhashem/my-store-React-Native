@@ -3,7 +3,7 @@ import { View, StyleSheet, Text , ScrollView, ActivityIndicator, Modal} from 're
 import { Header, Icon, Button, Input, Image } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native';
 import {v4 , v5} from 'uuid'
-import { addFromCamera, deleteSomePhoto} from '../../../helpers/commonFuntions';
+import { addFromCamera, deleteSomePhoto , addFromGallery} from '../../../helpers/commonFuntions';
 import { auth, db } from '../../../services/firebase';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -44,9 +44,8 @@ const Product = ({navigation , route}) => {
     const addMorePhoto = () => {
         setLoading(true)
         let id = v4();
-        addFromCamera(`product/${auth.currentUser.uid}/${prName}/${id}`)
+        addFromGallery(`product/${auth.currentUser.uid}/${prName}/${id}`)
         .then(uri => {
-            
             return uri
         })
         .then(uri => {
@@ -55,6 +54,7 @@ const Product = ({navigation , route}) => {
         }).then((uri) => {
             console.warn(uri)
         }).catch(e => {
+            setLoading(false)
             console.warn(e)
         })
     }

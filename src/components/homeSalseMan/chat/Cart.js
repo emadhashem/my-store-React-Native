@@ -41,7 +41,7 @@ const Cart = ({navigation , user}) => {
                     <Icon name = "menu"  type = "feather"/>
                 </TouchableOpacity>}
             />
-            <View style = {{borderWidth : .5 , width : '90%' }}>
+            <View style = {{borderWidth : .5 , width : '90%', alignSelf : "center" }}>
             </View>
             <View style = {{flex : 1 }}>
                 <FlatList 

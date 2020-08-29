@@ -12,21 +12,21 @@ const HomeSalesMan = ({navigation , user = ''}) => {
     useEffect(() => {
         db.collection('user').doc(user).collection('following').get()
         .then(docs => {
-            docs.forEach(doc => {
-                db.collection('follow').doc(user + doc.id).get()
+            docs.forEach(docEach => {
+                db.collection('follow').doc(user + docEach.id).get()
                 .then(fDoc => {
                     if(fDoc.exists) {
-                        db.collection('product').doc(doc.id).get()
+
+                        db.collection('product').doc(docEach.id).get()
                         .then(doc => {
                             let arr = [];
-                            if(doc.exists) {
                                 db.collection('user').doc(doc.id).get()
                                 .then(docId => {
-                                    fill(doc.id , doc.data().prs , docId.data()).then(arr => {
-                                        setPrs([...prs , ...arr])
+                                    fill(docId.id , doc.data().prs , docId.data()).then(arr => {
+                                        setPrs(prs => [...prs , ...arr])
                                     })
                                 })
-                            }
+                            
                         })
                     }
                     

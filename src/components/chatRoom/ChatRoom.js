@@ -8,32 +8,6 @@ import { connect } from 'react-redux';
 const pic = 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png'
 const heightD = Dimensions.get('window').height;
 const widthD = Dimensions.get('window').width;
-const tst = [
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omda',
-    'omdafvdfvd',
-    
-]
 const ChatRoom = ({navigation , route , user}) => {
     const uid2 = route.params.userId;
     const uid1 = user;
@@ -95,8 +69,9 @@ const ChatRoom = ({navigation , route , user}) => {
                     navigation.pop()
                 }} />} />
                 <TouchableOpacity
-                style = {{flexDirection : 'row' , alignItems : "center" , width : '200%', 
-                justifyContent : 'space-around'
+                style = {{flexDirection : 'row' , alignItems : "center" , width : '100%', 
+                justifyContent : 'space-around',
+                alignItems : 'center'
                 }}
                 onPress = {() => {
                     navigation.navigate('profileRvw' , {
@@ -104,12 +79,14 @@ const ChatRoom = ({navigation , route , user}) => {
                     })
                     console.warn('kfnvodf')
                 }}>
-                    <Avatar size = {40} source = {{uri : uid2Img}} />
-                    <Text style = {{textAlign : 'center',
+                    <Avatar containerStyle = {{marginHorizontal : 5}} size = {40} source = {{uri : uid2Img}} />
+                    {/* <Text style = {{textAlign : 'center',
                     fontSize : 25,
-                    color : 'white'
+                    color : 'white',
+                    marginLeft : 20,
+                    width : 100
                      
-                     }}>{uid2Name}</Text>
+                     }}>{uid2Name}</Text> */}
                 </TouchableOpacity>
             </View>
             </Header>
