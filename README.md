@@ -6,34 +6,34 @@ The project is a social media app but for online stores.
 
 # ScreenShots :
 ## Salesman interface : 
-<div><img src = "./src/screen_shoots/signin.png"/></div>
-<div><img src = "./src/screen_shoots/signup.png"/></div>
-<div><img src = "./src/screen_shoots/welcome.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/signin.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/signup.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/welcome.png"/></div>
 
-<div><img src = "./src/screen_shoots/sidedrawer.png"/></div>
-<div><img src = "./src/screen_shoots/chage_pic.png"/></div>
-<div><img src = "./src/screen_shoots/profile_1.png"/></div>
-<div><img src = "./src/screen_shoots/profile_2.png"/></div>
-<div><img src = "./src/screen_shoots/profile_3.png"/></div>
-<div><img src = "./src/screen_shoots/add new product.png"/></div>
-<div><img src = "./src/screen_shoots/update_product.png"/></div>
-<div><img src = "./src/screen_shoots/explor_1.png"/></div>
-<div><img src = "./src/screen_shoots/explor_profile.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/sidedrawer.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/chage_pic.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/profile_1.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/profile_2.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/profile_3.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/add new product.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/update_product.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/explor_1.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/explor_profile.png"/></div>
 
-<div><img src = "./src/screen_shoots/search_1.png"/></div>
-<div><img src = "./src/screen_shoots/cart.png"/></div>
-<div><img src = "./src/screen_shoots/chat_1.png"/></div>
-<div><img src = "./src/screen_shoots/chat_2.png"/></div>
-<div><img src = "./src/screen_shoots/chat_3.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/search_1.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/cart.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/chat_1.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/chat_2.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/chat_3.png"/></div>
 <hr>
 
 
 
 ## Customer user interface :
-<div><img src = "./src/screen_shoots/timelne_user.png"/></div>
-<div><img src = "./src/screen_shoots/explor_user.png"/></div>
-<div><img src = "./src/screen_shoots/search_2.png"/></div>
-<div><img src = "./src/screen_shoots/search_user.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/timelne_user.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/explor_user.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/search_2.png"/></div>
+<div style = "width : 200px"><img src = "./src/screen_shoots/search_user.png"/></div>
 
 
 # Features :
